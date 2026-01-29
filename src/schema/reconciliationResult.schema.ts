@@ -19,6 +19,7 @@ export interface IReconciliationResult extends Document {
       reason?: string;
     }[];
   }[];
+  isDeleted?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -74,6 +75,8 @@ const reconciliationResultSchema = new Schema<IReconciliationResult>(
           required: true,
         },
 
+        isDeleted: { type: Boolean, default: false },
+
         matchedWith: [
           {
             type: Schema.Types.ObjectId,
@@ -95,6 +98,7 @@ const reconciliationResultSchema = new Schema<IReconciliationResult>(
       },
     ],
   },
+
   { timestamps: true },
 );
 
