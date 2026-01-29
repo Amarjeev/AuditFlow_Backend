@@ -1,6 +1,6 @@
 import "dotenv/config";
 import mongoose from "mongoose";
-import { systemRecordModel } from "../schema/systemRecord.model";
+import { systemRecordModel } from "../schema/systemRecord.schema";
 
 const MONGO_URI = process.env.MONGO_URL!;
 const TOTAL_RECORDS = 500;

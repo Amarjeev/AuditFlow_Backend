@@ -1,6 +1,6 @@
 import { AuthRole } from "./../../utils/jwt";
 import { AppError } from "../../utils/AppError";
-import AdminProfileModel from "../admin/profile/adminProfile.model";
+import AdminProfileModel from "../../schema/adminProfile.model";
 import { verifyPassword } from "../../utils/password";
 import { generateAccessToken, generateRefreshToken } from "../../utils/jwt";
 

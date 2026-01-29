@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { verifyRefreshToken, generateAccessToken } from "../../../utils/jwt";
 import { AppError } from "../../../utils/AppError";
-import AdminProfileModel from "../../admin/profile/adminProfile.model";
+import AdminProfileModel from "../../../schema/adminProfile.model";
 import { clearAuthCookie } from "../../../utils/cookies";
 
 const refreshTokenController = async (req: Request, res: Response) => {

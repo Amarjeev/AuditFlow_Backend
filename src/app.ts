@@ -5,8 +5,7 @@ import cors, { CorsOptions } from "cors";
 import { globalErrorHandler } from "./middlewares/error.middleware";
 import AdminProfileRouter from "./modules/admin/profile/adminProfile.routes";
 import authRouter from "./modules/auth/auth.routes";
-import refreshTokenController from "./modules/auth/controllers/refresh-token.controller";
-import  checkAuthStatusController  from "./modules/auth/controllers/checkAuthStatus.controller";
+import uploadJobRouter from "./modules/uploadJobs/jobs.routes";
 
 const app = express();
 
@@ -23,7 +22,7 @@ app.use(express.json());
 
 app.use("/api/v1/admin/profile", AdminProfileRouter);
 app.use("/api/v1/auth", authRouter);
-
+app.use("/api/v1/jobs", uploadJobRouter);
 
 app.use(globalErrorHandler);
 

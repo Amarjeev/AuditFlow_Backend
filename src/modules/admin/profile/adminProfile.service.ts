@@ -1,6 +1,6 @@
-import { IAdminProfile } from "./adminProfile.model";
+import { IAdminProfile } from "../../../schema/adminProfile.model";
 import { hashPassword } from "../../../utils/password";
-import AdminProfileModel from "./adminProfile.model";
+import AdminProfileModel from "../../../schema/adminProfile.model";
 
 const adminProfileService = async (payload: IAdminProfile) => {
   const { name, username, password } = payload;
