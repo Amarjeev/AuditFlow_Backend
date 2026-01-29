@@ -1,0 +1,65 @@
+# -----------------------
+# Dependencies
+# -----------------------
+node_modules/
+.pnp/
+.pnp.js
+
+# -----------------------
+# Build output
+# -----------------------
+dist/
+build/
+out/
+
+# -----------------------
+# Environment variables
+# -----------------------
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# -----------------------
+# Logs
+# -----------------------
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+logs/
+*.log
+
+# -----------------------
+# OS / Editor files
+# -----------------------
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+!.vscode/extensions.json
+
+# -----------------------
+# Vite / Cache
+# -----------------------
+.vite/
+.eslintcache
+
+# -----------------------
+# Coverage / Testing
+# -----------------------
+coverage/
+
+# -----------------------
+# TypeScript
+# -----------------------
+*.tsbuildinfo
+
+# -----------------------
+# Misc
+# -----------------------
+*.swp
+*.swo
+*.bak
+*.tmp
