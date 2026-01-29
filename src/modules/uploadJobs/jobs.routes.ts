@@ -1,8 +1,12 @@
 import { Router } from "express";
 import { upload } from "../../middlewares/upload.middleware";
-import { uploadJobController } from "./jobs.controller";
 import { authMiddleware } from "../../middlewares/auth.middleware";
-import { getuploadJobsController } from "./jobs.controller";
+import {
+  getuploadJobsController,
+  getReconciliationJobDataController,
+  uploadJobController,
+  deleteJobController,
+} from "./jobs.controller";
 
 const uploadJobRouter = Router();
 
@@ -19,4 +23,15 @@ uploadJobRouter.get(
   getuploadJobsController,
 );
 
+uploadJobRouter.get(
+  "/upload-jobs/:jobId",
+  authMiddleware(["admin"]),
+  getReconciliationJobDataController,
+);
+
+uploadJobRouter.post(
+  "/delete-job/:jobId",
+  authMiddleware(["admin"]),
+  deleteJobController,
+);
 export default uploadJobRouter;

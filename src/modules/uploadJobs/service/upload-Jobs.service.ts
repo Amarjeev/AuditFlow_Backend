@@ -1,9 +1,7 @@
-// import fs from "fs";
 import { AppError } from "../../../utils/AppError";
 import { validateJobUpload } from "../jobs.validation";
 import uploadJobModel from "../../../schema/uploadJob.schema";
 import reconciliationJobsService from "./reconciliation.service";
-// import type { ReconciliationJobPayload } from "./reconciliation.service";
 
 export type JobsServicePayload = {
   file: Express.Multer.File;
@@ -55,15 +53,6 @@ const jobsService = async ({
     uploadJobId: uploadJob?._id,
     mapping: parsedMapping,
   });
-
-  //clear upload file data
-  // if (file?.path) {
-  //   fs.unlink(file.path, (err) => {
-  //     if (err) {
-  //       console.error("Failed to delete uploaded file:", err);
-  //     }
-  //   });
-  // }
 
   return {
     success: true,

@@ -19,7 +19,7 @@ export interface IReconciliationResult extends Document {
       reason?: string;
     }[];
   }[];
-  isDeleted?: boolean;
+  isDeleted: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -56,6 +56,7 @@ const reconciliationResultSchema = new Schema<IReconciliationResult>(
       type: Number,
       default: 0,
     },
+    isDeleted: { type: Boolean, default: false },
 
     results: [
       {
@@ -74,8 +75,6 @@ const reconciliationResultSchema = new Schema<IReconciliationResult>(
           enum: ["MATCHED", "PARTIAL", "DUPLICATE", "UNMATCHED"],
           required: true,
         },
-
-        isDeleted: { type: Boolean, default: false },
 
         matchedWith: [
           {

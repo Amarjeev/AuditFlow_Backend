@@ -4,6 +4,7 @@ import { systemRecordModel } from "../../../schema/systemRecord.schema";
 import reconciliationResultModel from "../../../schema/reconciliationResult.schema";
 import { AppError } from "../../../utils/AppError";
 import { parseExcel } from "../../../utils/excelParser";
+import fs from "fs";
 
 export type ReconciliationJobPayload = {
   uploadJobId: Types.ObjectId;
@@ -127,6 +128,14 @@ const reconciliationJobsService = async ({
       status: "COMPLETED",
       totalRecords,
     });
+
+    if (uploadJob?.filePath) {
+      fs.unlink(uploadJob?.filePath, (err) => {
+        if (err) {
+          console.error("Failed to delete uploaded file:", err);
+        }
+      });
+    }
   } catch (error: any) {
     await uploadJobModel.findByIdAndUpdate(uploadJobId, {
       status: "FAILED",
