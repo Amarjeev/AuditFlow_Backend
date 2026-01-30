@@ -1,5 +1,6 @@
 import uploadJobModel from "../../../schema/uploadJob.schema";
 import reconciliationResultModel from "../../../schema/reconciliationResult.schema";
+import { redis } from "../../../config/redis";
 import { AppError } from "../../../utils/AppError";
 
 type deleteJobsPayload = {
@@ -32,6 +33,7 @@ const deleteJobsService = async ({
   }
 
   await Promise.all([job?.save(), result?.save()]);
+  await redis.del("reconciliation:dashboard");
 
   return {
     success: true,

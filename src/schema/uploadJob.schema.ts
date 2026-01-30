@@ -12,6 +12,7 @@ export interface IUploadJob extends Document {
   filePath: string;
   status: UploadJobStatus;
   uploadedBy: Types.ObjectId;
+  uploadedByRole: "admin" | "analyst";
   isDeleted?: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -44,7 +45,11 @@ const uploadJobSchema = new Schema<IUploadJob>(
 
     uploadedBy: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      required: true,
+    },
+    
+    uploadedByRole: {
+      type: String,
       required: true,
     },
 

@@ -10,7 +10,7 @@ import deleteJobsService from "./service/delete-Jobs.service";
 export const uploadJobController = async (req: Request, res: Response) => {
   const file = req.file;
   const { mapping } = req.body;
-  const { userId } = (req as any).user;
+  const { userId ,role} = (req as any).user;
 
   // 2. Create fingerprint
   if (!req.file?.path) {
@@ -23,6 +23,7 @@ export const uploadJobController = async (req: Request, res: Response) => {
     mapping,
     fileHash,
     userId,
+    role
   } as JobsServicePayload);
 
   res.status(200).send(response);
