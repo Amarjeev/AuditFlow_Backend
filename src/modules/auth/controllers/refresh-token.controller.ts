@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { verifyRefreshToken, generateAccessToken } from "../../../utils/jwt";
 import { AppError } from "../../../utils/AppError";
-import AdminProfileModel from "../../../schema/adminProfile.model";
+import userProfileModel from "../../../schema/userProfile.model";
 import { clearAuthCookie } from "../../../utils/cookies";
 
 const refreshTokenController = async (req: Request, res: Response) => {
@@ -18,7 +18,7 @@ const refreshTokenController = async (req: Request, res: Response) => {
 
   switch (role) {
     case "admin":
-      userExist = await AdminProfileModel.findOne({ isDeleted: false }).lean();
+      userExist = await userProfileModel.findOne({ isDeleted: false }).lean();
       break;
 
     default:

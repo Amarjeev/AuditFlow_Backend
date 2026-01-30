@@ -1,6 +1,6 @@
 import { body } from "express-validator";
 
-export const adminProfileValidation = [
+export const userProfileValidation = [
   body("name")
     .trim()
     .notEmpty()
@@ -10,16 +10,22 @@ export const adminProfileValidation = [
     .matches(/^[A-Za-z\s]+$/)
     .withMessage("Name must contain only letters"),
 
-  body("username")
+  body("mobile")
     .trim()
     .notEmpty()
-    .withMessage("Username is required")
-    .isLength({ min: 4, max: 15 })
-    .withMessage("Username must be between 4 and 15 characters"),
+    .withMessage("Mobile number is required")
+    .matches(/^[6-9]\d{9}$/)
+    .withMessage("Enter a valid 10-digit Indian mobile number"),
 
   body("password")
     .trim()
     .optional()
     .isLength({ min: 6, max: 20 })
     .withMessage("Password must be between 6 and 20 characters"),
+
+  body("role")
+    .trim()
+    .toLowerCase()
+    .isIn(["admin", "analyst", "viewer"])
+    .withMessage("Role must be admin, analyst, or viewer"),
 ];

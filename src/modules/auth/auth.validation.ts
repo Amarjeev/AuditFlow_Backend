@@ -1,7 +1,12 @@
 import { body } from "express-validator";
 
 export const authValidation = [
-  body("username").trim().notEmpty().withMessage("Username is required"),
+  body("mobile")
+    .trim()
+    .notEmpty()
+    .withMessage("Mobile number is required")
+    .isMobilePhone("en-IN")
+    .withMessage("Invalid mobile number"),
 
   body("password").trim().notEmpty().withMessage("Password is required"),
   body("role")

@@ -16,7 +16,7 @@ const getJobsService = async ({ userId, role }: GetJobsPayload) => {
     .find(query)
     .sort({ createdAt: -1 })
     .lean()
-    .select("status createdAt fileName");
+    .select("status createdAt fileName uploadedByRole");
 
   return jobs;
 };

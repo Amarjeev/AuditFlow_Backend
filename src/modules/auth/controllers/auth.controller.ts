@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import authService from "../auth.service";
 
 const authController = async (req: Request, res: Response) => {
+
   const response = await authService(req.body);
 
   const { accessToken, refreshToken } = response;
