@@ -1,6 +1,7 @@
 import { Schema, model, Types } from "mongoose";
+import { AuditLog } from "../interfaces/auditLog.interface";
 
-const AuditLogSchema = new Schema(
+const AuditLogSchema = new Schema<AuditLog>(
   {
     uploadJobId: {
       type: Types.ObjectId,
@@ -66,4 +67,4 @@ const AuditLogSchema = new Schema(
   },
 );
 
-export const AuditLogModel = model("AuditLog", AuditLogSchema);
+export const AuditLogModel = model<AuditLog>("AuditLog", AuditLogSchema);

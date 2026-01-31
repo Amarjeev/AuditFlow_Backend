@@ -1,13 +1,5 @@
-import  { Schema, model } from "mongoose";
-import { AuthRole } from "../utils/jwt";
-
-export interface IUserProfile {
-  mobile: string;
-  name: string;
-  password: string;
-  isDeleted?: boolean;
-  role: AuthRole;
-}
+import { Schema, model } from "mongoose";
+import { IUserProfile } from "../interfaces/userProfile.interface";
 
 const userProfileSchema = new Schema<IUserProfile>(
   {

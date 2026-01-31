@@ -1,6 +1,5 @@
-import userProfileModel, {
-  IUserProfile,
-} from "../../../../schema/userProfile.model";
+import userProfileModel from "../../../../schema/userProfile.model";
+import { IUserProfile } from "../../../../interfaces/userProfile.interface";
 import { AppError } from "../../../../utils/AppError";
 import { AuthRole } from "../../../../utils/jwt";
 import { hashPassword } from "../../../../utils/password";

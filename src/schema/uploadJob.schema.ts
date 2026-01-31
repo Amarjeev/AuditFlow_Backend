@@ -1,22 +1,5 @@
-import { Schema, model, Types, Document } from "mongoose";
-
-export enum UploadJobStatus {
-  PROCESSING = "PROCESSING",
-  COMPLETED = "COMPLETED",
-  FAILED = "FAILED",
-}
-
-export interface IUploadJob extends Document {
-  fileName: string;
-  fileHash: string;
-  filePath: string;
-  status: UploadJobStatus;
-  uploadedBy: Types.ObjectId;
-  uploadedByRole: "admin" | "analyst";
-  isDeleted?: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import { Schema, model } from "mongoose";
+import { IUploadJob ,UploadJobStatus} from "../interfaces/uploadJob.interface";
 
 const uploadJobSchema = new Schema<IUploadJob>(
   {
@@ -47,7 +30,7 @@ const uploadJobSchema = new Schema<IUploadJob>(
       type: Schema.Types.ObjectId,
       required: true,
     },
-    
+
     uploadedByRole: {
       type: String,
       required: true,

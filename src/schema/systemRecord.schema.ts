@@ -1,13 +1,5 @@
 import { Schema, model, Document } from "mongoose";
-
-export interface ISystemRecord {
-  transactionId: string;
-  referenceNumber: string;
-  amount: number;
-  date: Date;
-  source: "SYSTEM";
-  createdAt: Date;
-}
+import { ISystemRecord } from "../interfaces/systemRecord.interface";
 
 const SystemRecordSchema = new Schema<ISystemRecord>(
   {
