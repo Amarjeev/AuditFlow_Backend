@@ -12,7 +12,7 @@ import auditRouter from "./modules/audit/audit.routes";
 const app = express();
 
 const corsOptions: CorsOptions = {
-  origin: ["http://localhost:5173"],
+  origin: ["http://localhost:5173", "https://audit-flow-frontend.vercel.app/"],
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
   credentials: true,
