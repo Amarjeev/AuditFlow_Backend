@@ -1,17 +1,26 @@
+// import multer from "multer";
+
+// const storage = multer.diskStorage({
+//   destination: (_req, _file, cb) => {
+//     cb(null, "uploads/");
+//   },
+//   filename: (_req, file, cb) => {
+//     const uniqueName = `${Date.now()}-${file.originalname}`;
+//     cb(null, uniqueName);
+//   },
+// });
+
+// export const upload = multer({
+//   storage,
+//   limits: {
+//     fileSize: 10 * 1024 * 1024, // 10MB
+//   },
+// });
+
 import multer from "multer";
 
-const storage = multer.diskStorage({
-  destination: (_req, _file, cb) => {
-    cb(null, "uploads/");
-  },
-  filename: (_req, file, cb) => {
-    const uniqueName = `${Date.now()}-${file.originalname}`;
-    cb(null, uniqueName);
-  },
-});
-
 export const upload = multer({
-  storage,
+  storage: multer.memoryStorage(), // 🔥 FIX
   limits: {
     fileSize: 10 * 1024 * 1024, // 10MB
   },

@@ -14,6 +14,7 @@ export type GetJobsPayload = {
 export type ReconciliationJobPayload = {
   uploadJobId: Types.ObjectId;
   mapping?: Record<string, string> | null;
+  fileBuffer: Buffer;
 };
 
 export type JobsServicePayload = {

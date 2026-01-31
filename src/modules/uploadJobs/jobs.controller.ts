@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import jobsService from "./service/upload-Jobs.service";
 import { JobsServicePayload } from "./type/uploadJobs.type";
-import { createFileHash } from "../../utils/createFileId.service";
+import { createFileHashFromBuffer } from "../../utils/createFileId.service";
 import { AppError } from "../../utils/AppError";
 import getJobsService from "./service/get-Jobs.service";
 import getReconciliationJobDataService from "./service/getReconciliationJobData.service";
@@ -13,10 +13,11 @@ export const uploadJobController = async (req: Request, res: Response) => {
   const { userId, role } = (req as any).user;
 
   // 2. Create fingerprint
-  if (!req.file?.path) {
-    throw new AppError("File path is missing", 400);
+   if (!file || !file.buffer) {
+    throw new AppError("File is required", 400);
   }
-  const fileHash = createFileHash(req.file.path);
+
+  const fileHash = createFileHashFromBuffer(file.buffer);
 
   const response = await jobsService({
     file,
