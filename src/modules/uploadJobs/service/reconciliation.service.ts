@@ -5,6 +5,7 @@ import reconciliationResultModel from "../../../schema/reconciliationResult.sche
 import { AppError } from "../../../utils/AppError";
 import { parseExcel } from "../../../utils/excelParser";
 import fs from "fs";
+import { createAuditLog } from "../../audit/service/createAuditLog.service";
 
 export type ReconciliationJobPayload = {
   uploadJobId: Types.ObjectId;
@@ -32,6 +33,14 @@ const reconciliationJobsService = async ({
     if (uploadJob.status !== "PROCESSING") {
       return;
     }
+
+    await createAuditLog({
+      uploadJobId,
+      action: "JOB_CREATED",
+      performedBy: "Analyst",
+      entityType: "JOB",
+      details: `${uploadJob.fileName} uploaded`,
+    });
 
     // STEP 2: Load system records
     const systemRecords = await systemRecordModel.find().lean();
@@ -101,6 +110,24 @@ const reconciliationJobsService = async ({
           break;
       }
 
+      await createAuditLog({
+        uploadJobId,
+        action: "ROW_PROCESSED",
+        performedBy: "System",
+        entityType: "ROW",
+        excelRowNumber,
+        transactionId,
+        status,
+        details:
+          status === "MATCHED"
+            ? "Row matched successfully"
+            : status === "UNMATCHED"
+              ? "No matching system record found"
+              : status === "PARTIAL"
+                ? "Amount mismatch"
+                : "Duplicate transaction detected",
+      });
+
       results.push({
         transactionId,
         excelRowNumber,
@@ -123,6 +150,21 @@ const reconciliationJobsService = async ({
       results,
     });
 
+    const finalAction =
+      totalUnmatchedRecords > 0 ||
+      totalPartialRecords > 0 ||
+      totalDuplicateRecords > 0
+        ? "JOB_COMPLETED_WITH_ERRORS"
+        : "JOB_COMPLETED";
+
+    await createAuditLog({
+      uploadJobId,
+      action: finalAction,
+      performedBy: "System",
+      entityType: "JOB",
+      details: `Matched: ${totalMatchedRecords}, Unmatched: ${totalUnmatchedRecords}, Partial: ${totalPartialRecords}, Duplicate: ${totalDuplicateRecords}`,
+    });
+
     // STEP 6: Mark job completed
     await uploadJobModel.findByIdAndUpdate(uploadJobId, {
       status: "COMPLETED",
@@ -140,6 +182,14 @@ const reconciliationJobsService = async ({
     await uploadJobModel.findByIdAndUpdate(uploadJobId, {
       status: "FAILED",
       totalRecords,
+    });
+
+    await createAuditLog({
+      uploadJobId,
+      action: "JOB_COMPLETED_WITH_ERRORS",
+      performedBy: "System",
+      entityType: "JOB",
+      details: "Job failed due to internal error",
     });
 
     return;

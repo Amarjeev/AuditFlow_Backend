@@ -1,10 +1,10 @@
-import { AuthRole } from "./../../utils/jwt";
-import { AppError } from "../../utils/AppError";
-import userProfileModel from "../../schema/userProfile.model";
-import { verifyPassword } from "../../utils/password";
-import { generateAccessToken, generateRefreshToken } from "../../utils/jwt";
+import { AuthRole } from "../../../utils/jwt";
+import { AppError } from "../../../utils/AppError";
+import userProfileModel from "../../../schema/userProfile.model";
+import { verifyPassword } from "../../../utils/password";
+import { generateAccessToken, generateRefreshToken } from "../../../utils/jwt";
 
-const authService = async (payload: {
+const loginService = async (payload: {
   mobile: string;
   password: string;
   role: AuthRole;
@@ -16,6 +16,7 @@ const authService = async (payload: {
   const adminProfile = await userProfileModel
     .findOne({
       mobile,
+      role:userRole,
       isDeleted: false,
     })
     .lean();
@@ -52,4 +53,4 @@ const authService = async (payload: {
   return { accessToken, refreshToken };
 };
 
-export default authService;
+export default loginService;

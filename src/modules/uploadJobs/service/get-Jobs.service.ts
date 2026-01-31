@@ -1,4 +1,5 @@
 import uploadJobModel from "../../../schema/uploadJob.schema";
+import { Types } from "mongoose";
 
 type GetJobsPayload = {
   userId?: string;
@@ -9,7 +10,7 @@ const getJobsService = async ({ userId, role }: GetJobsPayload) => {
   const query: any = { isDeleted: false };
 
   if (role !== "admin") {
-    query.uploadedBy = userId;
+    query.uploadedBy = new Types.ObjectId(userId);
   }
 
   const jobs = await uploadJobModel

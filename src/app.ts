@@ -7,6 +7,7 @@ import authRouter from "./modules/auth/auth.routes";
 import uploadJobRouter from "./modules/uploadJobs/jobs.routes";
 import reconciliationDashboardRouter from "./modules/reconciliation/reconciliation.routes";
 import userProfileRouter from "./modules/admin/createUserProfile/userProfile.routes";
+import auditRouter from "./modules/audit/audit.routes";
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use("/api/v1/user", userProfileRouter);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/jobs", uploadJobRouter);
 app.use("/api/v1/reconciliation", reconciliationDashboardRouter);
+app.use("/api/v1/audit", auditRouter);
 
 app.use(globalErrorHandler);
 

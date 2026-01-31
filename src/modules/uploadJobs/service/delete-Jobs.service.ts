@@ -20,6 +20,10 @@ const deleteJobsService = async ({
     throw new AppError("job not found ", 404);
   }
 
+  if (job?.uploadedBy.toString() !== userId) {
+    throw new AppError("No access to delete this file ", 404);
+  }
+
   let result = await reconciliationResultModel.findOne({
     isDeleted: false,
     uploadJobId: jobId,

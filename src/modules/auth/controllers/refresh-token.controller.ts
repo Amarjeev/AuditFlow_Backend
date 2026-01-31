@@ -18,7 +18,15 @@ const refreshTokenController = async (req: Request, res: Response) => {
 
   switch (role) {
     case "admin":
-      userExist = await userProfileModel.findOne({ isDeleted: false }).lean();
+      userExist = await userProfileModel
+        .findOne({ isDeleted: false, _id: userId })
+        .lean();
+      break;
+
+    case "analyst":
+      userExist = await userProfileModel
+        .findOne({ isDeleted: false, _id: userId })
+        .lean();
       break;
 
     default:

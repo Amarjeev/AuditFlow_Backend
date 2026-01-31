@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import authService from "../auth.service";
+import loginService from "../service/login.service";
 
-const authController = async (req: Request, res: Response) => {
+const loginController = async (req: Request, res: Response) => {
 
-  const response = await authService(req.body);
+  const response = await loginService(req.body);
 
   const { accessToken, refreshToken } = response;
 
@@ -26,4 +26,4 @@ const authController = async (req: Request, res: Response) => {
     message: "Login successful",
   });
 };
-export default authController;
+export default loginController;

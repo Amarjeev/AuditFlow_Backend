@@ -12,26 +12,26 @@ const uploadJobRouter = Router();
 
 uploadJobRouter.post(
   "/upload",
-  authMiddleware(["admin"]),
+  authMiddleware(["admin", "analyst"]),
   upload.single("file"),
   uploadJobController,
 );
 
 uploadJobRouter.get(
   "/upload-jobs",
-  authMiddleware(["admin"]),
+  authMiddleware(["admin", "analyst"]),
   getuploadJobsController,
 );
 
 uploadJobRouter.get(
   "/upload-jobs/:jobId",
-  authMiddleware(["admin"]),
+  authMiddleware(["admin", "analyst"]),
   getReconciliationJobDataController,
 );
 
 uploadJobRouter.post(
   "/delete-job/:jobId",
-  authMiddleware(["admin"]),
+  authMiddleware(["admin", "analyst"]),
   deleteJobController,
 );
 export default uploadJobRouter;

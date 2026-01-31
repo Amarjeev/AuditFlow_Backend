@@ -4,20 +4,15 @@ import { redis } from "../../../config/redis";
 export const getReconciliationDashboardService = async () => {
   const cacheKey = "reconciliation:dashboard";
 
-  /* ------------------ SAFE REDIS GET ------------------ */
-    const cachedData = await redis.get(cacheKey);
-    if (cachedData) return cachedData;
+  const cached = await redis.get(cacheKey);
+  if (cached) {
+    return typeof cached === "string" ? JSON.parse(cached) : cached;
+  }
 
-  /* ------------------ CORRECT AGGREGATION ------------------ */
-  const result = await reconciliationResultModel.aggregate([
-    {
-      $match: {
-        isDeleted: false,
-      },
-    },
-    {
-      $unwind: "$results",
-    },
+  /* ------------------ AGGREGATION ------------------ */
+  const aggregation = await reconciliationResultModel.aggregate([
+    { $match: { isDeleted: false } },
+    { $unwind: "$results" },
     {
       $group: {
         _id: "$results.status",
@@ -29,20 +24,33 @@ export const getReconciliationDashboardService = async () => {
   let totalRecords = 0;
   let matched = 0;
   let unmatched = 0;
+  let partial = 0;
   let duplicates = 0;
 
-  for (const item of result) {
+  for (const item of aggregation) {
     totalRecords += item.count;
 
-    if (item._id === "MATCHED") matched = item.count;
-    if (item._id === "UNMATCHED") unmatched = item.count;
-    if (item._id === "DUPLICATE") duplicates = item.count;
+    switch (item._id) {
+      case "MATCHED":
+        matched = item.count;
+        break;
+      case "UNMATCHED":
+        unmatched = item.count;
+        break;
+      case "PARTIAL":
+        partial = item.count;
+        break;
+      case "DUPLICATE":
+        duplicates = item.count;
+        break;
+    }
   }
 
   const response = {
     totalRecords,
     matched,
     unmatched,
+    partial,
     duplicates,
     accuracy:
       totalRecords === 0
@@ -50,10 +58,7 @@ export const getReconciliationDashboardService = async () => {
         : Number(((matched / totalRecords) * 100).toFixed(1)),
   };
 
-  /* ------------------ SAFE REDIS SET ------------------ */
-  if (redis) {
-    redis.set(cacheKey, response, { ex: 1800 });
-  }
+  await redis.set(cacheKey, JSON.stringify(response), { ex: 1800 });
 
   return response;
 };

@@ -1,6 +1,6 @@
 import { body } from "express-validator";
 
-export const authValidation = [
+export const loginValidation = [
   body("mobile")
     .trim()
     .notEmpty()
