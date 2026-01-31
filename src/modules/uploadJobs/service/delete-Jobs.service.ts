@@ -2,12 +2,7 @@ import uploadJobModel from "../../../schema/uploadJob.schema";
 import reconciliationResultModel from "../../../schema/reconciliationResult.schema";
 import { redis } from "../../../config/redis";
 import { AppError } from "../../../utils/AppError";
-
-type deleteJobsPayload = {
-  userId?: string;
-  role?: "admin" | "analyst" | "viewer";
-  jobId: string;
-};
+import { deleteJobsPayload } from "../type/uploadJobs.type";
 
 const deleteJobsService = async ({
   userId,

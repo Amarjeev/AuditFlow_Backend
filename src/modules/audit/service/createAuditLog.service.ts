@@ -1,43 +1,8 @@
-import { Types } from "mongoose";
 import { AuditLogModel } from "../../../schema/auditLog.schema";
+import { AppError } from "../../../utils/AppError";
+import { CreateAuditLogInput } from "../type/auditLog.types";
 
-export type AuditAction =
-  | "JOB_CREATED"
-  | "ROW_PROCESSED"
-  | "JOB_COMPLETED"
-  | "JOB_COMPLETED_WITH_ERRORS";
 
-export type AuditEntityType = "JOB" | "ROW";
-
-export type PerformedBy = "Analyst" | "System" | "Admin";
-
-type CreateAuditLogInput = {
-  uploadJobId: Types.ObjectId;
-  action: AuditAction;
-  performedBy: PerformedBy;
-  entityType: AuditEntityType;
-
-  excelRowNumber?: number;
-  transactionId?: string;
-  status?:
-    | "MATCHED"
-    | "UNMATCHED"
-    | "PARTIAL"
-    | "DUPLICATE"
-    | "SUCCESS"
-    | "FAILED";
-
-  // Message / summary
-  details?: string;
-
-  // Flexible extra data (future-proof)
-  meta?: Record<string, any>;
-};
-
-/**
- * Create a single audit log entry
- * IMPORTANT: Audit logging must NEVER break main flow
- */
 export const createAuditLog = async (data: CreateAuditLogInput) => {
   try {
     await AuditLogModel.create({
@@ -52,14 +17,10 @@ export const createAuditLog = async (data: CreateAuditLogInput) => {
       meta: data.meta ?? {},
     });
   } catch (error) {
-    // Audit failures should not stop business logic
-    console.error("Audit log creation failed:", error);
+    throw new AppError("Audit log creation failed:", 500);
   }
 };
 
-/**
- * Optional helper for bulk row audit logs (performance-friendly)
- */
 export const createAuditLogsBulk = async (logs: CreateAuditLogInput[]) => {
   try {
     if (!logs.length) return;
@@ -79,6 +40,6 @@ export const createAuditLogsBulk = async (logs: CreateAuditLogInput[]) => {
       { ordered: false },
     );
   } catch (error) {
-    console.error("Bulk audit log creation failed:", error);
+     throw new AppError("Bulk audit log creation failed:", 500);
   }
 };

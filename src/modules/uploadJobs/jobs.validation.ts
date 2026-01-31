@@ -1,4 +1,5 @@
 import { AppError } from "../../utils/AppError";
+import { ValidateJobUploadPayload } from "./type/uploadJobs.type";
 
 const ALLOWED_MIME_TYPES = [
   "text/csv",
@@ -6,11 +7,6 @@ const ALLOWED_MIME_TYPES = [
   "application/vnd.ms-excel",
   "application/pdf",
 ];
-
-type ValidateJobUploadPayload = {
-  file?: Express.Multer.File;
-  mapping?: string;
-};
 
 export const validateJobUpload = ({
   file,

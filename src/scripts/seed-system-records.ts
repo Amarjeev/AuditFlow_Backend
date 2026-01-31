@@ -5,10 +5,6 @@ import { systemRecordModel } from "../schema/systemRecord.schema";
 const MONGO_URI = process.env.MONGO_URL!;
 const TOTAL_RECORDS = 500;
 
-if (!MONGO_URI) {
-  throw new Error("❌ MONGO_URL is not defined in .env");
-}
-
 async function seedSystemRecords() {
   await mongoose.connect(MONGO_URI);
 
@@ -22,7 +18,6 @@ async function seedSystemRecords() {
 
   await systemRecordModel.insertMany(records);
 
-  console.log(`✅ ${TOTAL_RECORDS} system records inserted`);
   process.exit(0);
 }
 

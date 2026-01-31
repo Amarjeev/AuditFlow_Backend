@@ -1,10 +1,6 @@
 import uploadJobModel from "../../../schema/uploadJob.schema";
 import { Types } from "mongoose";
-
-type GetJobsPayload = {
-  userId?: string;
-  role?: "admin" | "analyst" | "viewer";
-};
+import { GetJobsPayload } from "../type/uploadJobs.type";
 
 const getJobsService = async ({ userId, role }: GetJobsPayload) => {
   const query: any = { isDeleted: false };

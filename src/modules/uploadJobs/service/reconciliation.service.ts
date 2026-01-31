@@ -1,16 +1,12 @@
-import { Types } from "mongoose";
+import fs from "fs";
 import uploadJobModel from "../../../schema/uploadJob.schema";
 import { systemRecordModel } from "../../../schema/systemRecord.schema";
 import reconciliationResultModel from "../../../schema/reconciliationResult.schema";
 import { AppError } from "../../../utils/AppError";
 import { parseExcel } from "../../../utils/excelParser";
-import fs from "fs";
 import { createAuditLog } from "../../audit/service/createAuditLog.service";
-
-export type ReconciliationJobPayload = {
-  uploadJobId: Types.ObjectId;
-  mapping?: Record<string, string> | null;
-};
+import { ReconciliationJobPayload } from "../type/uploadJobs.type";
+import { Types } from "mongoose";
 
 const reconciliationJobsService = async ({
   uploadJobId,
@@ -19,7 +15,6 @@ const reconciliationJobsService = async ({
   let totalRecords = 0;
 
   try {
-    // STEP 1: Get upload job
     const uploadJob = await uploadJobModel.findOne({
       _id: uploadJobId,
       isDeleted: false,
@@ -29,7 +24,6 @@ const reconciliationJobsService = async ({
       throw new AppError("Upload job not found", 404);
     }
 
-    // Prevent re-processing
     if (uploadJob.status !== "PROCESSING") {
       return;
     }
@@ -42,10 +36,8 @@ const reconciliationJobsService = async ({
       details: `${uploadJob.fileName} uploaded`,
     });
 
-    // STEP 2: Load system records
     const systemRecords = await systemRecordModel.find().lean();
 
-    // STEP 3: Parse uploaded Excel
     const rows = parseExcel(uploadJob.filePath) as Record<string, any>[];
 
     const results: any[] = [];
@@ -55,10 +47,10 @@ const reconciliationJobsService = async ({
     let totalPartialRecords = 0;
     let totalDuplicateRecords = 0;
 
-    // STEP 4: Compare row by row
+    // Compare row by row
     for (let i = 0; i < rows.length; i++) {
       const row = rows[i];
-      const excelRowNumber = i + 2; // header = row 1
+      const excelRowNumber = i + 2;
 
       const transactionId = mapping?.transactionId
         ? row[mapping.transactionId]
@@ -139,7 +131,6 @@ const reconciliationJobsService = async ({
       totalRecords++;
     }
 
-    // STEP 5: Save reconciliation result
     await reconciliationResultModel.create({
       uploadJobId,
       totalRecords,
@@ -165,7 +156,6 @@ const reconciliationJobsService = async ({
       details: `Matched: ${totalMatchedRecords}, Unmatched: ${totalUnmatchedRecords}, Partial: ${totalPartialRecords}, Duplicate: ${totalDuplicateRecords}`,
     });
 
-    // STEP 6: Mark job completed
     await uploadJobModel.findByIdAndUpdate(uploadJobId, {
       status: "COMPLETED",
       totalRecords,

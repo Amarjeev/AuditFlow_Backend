@@ -29,6 +29,12 @@ const refreshTokenController = async (req: Request, res: Response) => {
         .lean();
       break;
 
+    case "viewer":
+      userExist = await userProfileModel
+        .findOne({ isDeleted: false, _id: userId })
+        .lean();
+      break;
+
     default:
       throw new AppError("Invalid role", 400);
   }

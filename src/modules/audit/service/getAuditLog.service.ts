@@ -2,14 +2,7 @@ import { Types } from "mongoose";
 import { AuditLogModel } from "../../../schema/auditLog.schema";
 import { AppError } from "../../../utils/AppError";
 import uploadJobModel from "../../../schema/uploadJob.schema";
-
-type GetAuditLogsParams = {
-  jobId: string;
-  action?: string;
-  user?: string;
-  userId: string;
-  role: string;
-};
+import { GetAuditLogsParams } from "../type/auditLog.types";
 
 export const getAuditLogsService = async ({
   jobId,

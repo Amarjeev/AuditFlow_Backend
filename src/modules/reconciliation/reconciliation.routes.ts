@@ -6,13 +6,13 @@ const reconciliationDashboardRouter = Router();
 
 reconciliationDashboardRouter.get(
   "/dashboard",
-  authMiddleware(["admin"]),
+  authMiddleware(["admin","viewer"]),
   getReconciliationDashboardController,
 );
 
 reconciliationDashboardRouter.get(
   "/chart",
-  authMiddleware(["admin"]),
+  authMiddleware(["admin","viewer"]),
   getReconciliationChartDataController,
 );
 

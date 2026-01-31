@@ -1,4 +1,4 @@
-import mongoose, { Schema, model } from "mongoose";
+import  { Schema, model } from "mongoose";
 import { AuthRole } from "../utils/jwt";
 
 export interface IUserProfile {
@@ -8,7 +8,7 @@ export interface IUserProfile {
   isDeleted?: boolean;
   role: AuthRole;
 }
-// export type AuthRole = "admin" | "analyst" | "viewer";
+
 const userProfileSchema = new Schema<IUserProfile>(
   {
     mobile: { type: String, required: true, trim: true, unique: true },

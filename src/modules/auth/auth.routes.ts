@@ -12,6 +12,6 @@ const authRouter = Router();
 authRouter.post("/login", loginValidation, validate, authController);
 authRouter.post("/token/refresh", refreshTokenController);
 authRouter.get("/token/status", checkAuthStatusController);
-authRouter.post("/logout", authMiddleware(["admin","analyst"]), logoutController);
+authRouter.post("/logout", authMiddleware(["admin","analyst","viewer"]), logoutController);
 
 export default authRouter;

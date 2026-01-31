@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import jobsService from "./service/upload-Jobs.service";
-import { JobsServicePayload } from "./service/upload-Jobs.service";
-import { createFileHash } from "../../utils/fileFingerprint.service";
+import { JobsServicePayload } from "./type/uploadJobs.type";
+import { createFileHash } from "../../utils/createFileId.service";
 import { AppError } from "../../utils/AppError";
 import getJobsService from "./service/get-Jobs.service";
 import getReconciliationJobDataService from "./service/getReconciliationJobData.service";

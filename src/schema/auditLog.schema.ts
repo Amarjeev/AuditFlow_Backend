@@ -9,7 +9,6 @@ const AuditLogSchema = new Schema(
       index: true,
     },
 
-    // What happened
     action: {
       type: String,
       enum: [
@@ -21,19 +20,16 @@ const AuditLogSchema = new Schema(
       required: true,
     },
 
-    // Who did it
     performedBy: {
-      type: String, // "Analyst" | "System" | "Admin"
+      type: String,
       required: true,
     },
 
-    // On what
     entityType: {
-      type: String, // "JOB" | "ROW"
+      type: String,
       required: true,
     },
 
-    // Row-level fields (only for ROW events)
     rowId: {
       type: Types.ObjectId,
       ref: "ReconciliationResult",
@@ -50,27 +46,24 @@ const AuditLogSchema = new Schema(
       default: null,
     },
 
-    // Result of action
     status: {
-      type: String, // "SUCCESS" | "FAILED" | "UNMATCHED" | "MATCHED"
+      type: String,
       default: null,
     },
 
-    // Extra info / error reason
     details: {
       type: String,
       default: null,
     },
 
-    // Optional structured metadata
     meta: {
       type: Object,
       default: {},
     },
   },
   {
-    timestamps: { createdAt: true, updatedAt: false }, // IMMUTABLE
-  }
+    timestamps: { createdAt: true, updatedAt: false },
+  },
 );
 
 export const AuditLogModel = model("AuditLog", AuditLogSchema);

@@ -3,14 +3,7 @@ import { validateJobUpload } from "../jobs.validation";
 import uploadJobModel from "../../../schema/uploadJob.schema";
 import reconciliationJobsService from "./reconciliation.service";
 import { redis } from "../../../config/redis";
-
-export type JobsServicePayload = {
-  file: Express.Multer.File;
-  fileHash: string;
-  mapping: string;
-  userId: string;
-  role: string;
-};
+import { JobsServicePayload } from "../type/uploadJobs.type";
 
 const jobsService = async ({
   file,
