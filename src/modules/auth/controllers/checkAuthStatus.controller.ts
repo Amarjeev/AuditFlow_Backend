@@ -6,7 +6,7 @@ import {
   generateAccessToken,
 } from "../../../utils/jwt";
 
- const checkAuthStatusController = (req: Request, res: Response) => {
+const checkAuthStatusController = (req: Request, res: Response) => {
   const accessToken = req.cookies?.ACCESS_TOKEN;
   const refreshToken = req.cookies?.REFRESH_TOKEN;
 
@@ -33,8 +33,8 @@ import {
 
     res.cookie("ACCESS_TOKEN", newAccessToken, {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: isProd,
+      sameSite: isProd ? "none" : "lax",
       maxAge: 15 * 60 * 1000,
     });
 
@@ -46,5 +46,4 @@ import {
   });
 };
 
-
-export default checkAuthStatusController
+export default checkAuthStatusController;

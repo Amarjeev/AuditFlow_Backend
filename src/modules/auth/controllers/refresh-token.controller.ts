@@ -50,8 +50,8 @@ const refreshTokenController = async (req: Request, res: Response) => {
 
   res.cookie("ACCESS_TOKEN", newAccessToken, {
     httpOnly: true,
-    secure: false,
-    sameSite: "lax",
+    secure: isProd,
+    sameSite: isProd ? "none" : "lax",
     maxAge: 15 * 60 * 1000,
   });
 
